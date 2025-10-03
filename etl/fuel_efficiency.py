@@ -92,7 +92,7 @@ def fetch_all_fuel_efficiency_data(logger=get_logger()):
     return all_results
 
 
-def run_fuel_efficiency_etl(logger=get_logger()):
+def run_fuel_efficiency_etl(logger=get_logger(), use_raw_in_db: bool = False):
     """
     Extracts fuel efficiency data from the EIA API. Assumes presence of API key in the
     environment. Saves both the raw data returned from the API to a raw table in the
@@ -112,18 +112,36 @@ def run_fuel_efficiency_etl(logger=get_logger()):
             "value": record.get("value"),
         }
 
-        load_record["period"] = datetime.strptime(load_record["period"], "YYYY-mm-DD")
-        load_record["value"] = float(record["value"])
+        load_record["period"] = datetime.strptime(load_record["period"], "%Y-%m-%d")
+        load_record["value"] = (
+            None if record["value"] is None else float(record["value"])
+        )
 
         return load_record
 
-    all_data = fetch_all_fuel_efficiency_data()
+    if use_raw_in_db:
+        engine = get_engine()
+        with engine.connect() as conn:
+            df = pd.read_sql_table(table_name=f"raw_{TABLE.name}", con=conn)
+            all_data = df.to_dict(orient="records")
+    else:
+        all_data = fetch_all_fuel_efficiency_data()
 
-    # First, load these to the database to their own raw table; easiest with Pandas
-    logger.info(f"Pushing raw data for {len(all_data)} to raw table...")
-    pd.DataFrame(data=all_data).to_sql(name=f"raw_{TABLE.name}", con=get_engine())
+        # So that we can skip the API interaction in the future, write the raw values
+        # to the database
+        # TODO: Instead of rewriting the table every time, we can get just the new
+        # records from the API and insert those to the table; for now, this whole script
+        # is meant to load the table in one sitting
+        df = pd.DataFrame(data=all_data)
 
-    # Now we do some cleaning
+        logger.info("Saving retrieved raw data to local file...")
+        df.to_sql(name=f"raw_{TABLE.name}", con=get_engine(), index=False)
+
+        logger.info(
+            f"Pushing raw data for {len(all_data)} records to table raw_{TABLE.name}..."
+        )
+        df.to_sql(name=f"raw_{TABLE.name}", con=get_engine(), index=False)
+
     logger.info("Prepping fuel efficiency data for load to production...")
     load_data = [
         _parse_fuel_efficiency_record(record=data_record) for data_record in all_data

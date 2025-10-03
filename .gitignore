@@ -19,3 +19,8 @@ working_code/
 
 # Project source data: reflected in other paths within the repo as necessary
 take_home_source/
+
+# Leave out data
+data/
+# ...except for the provided project data
+!data/annual_miles.csv

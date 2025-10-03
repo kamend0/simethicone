@@ -32,7 +32,7 @@ class FuelEfficiency(Base):
     duoarea: Mapped[str] = mapped_column(nullable=False)
     period: Mapped[date] = mapped_column(nullable=False)
     product_name: Mapped[str] = mapped_column(nullable=False)
-    value: Mapped[float] = mapped_column()
+    value: Mapped[float] = mapped_column(nullable=True)
 
 
 class Vehicle(Base):
