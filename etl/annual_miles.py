@@ -1,8 +1,3 @@
-"""
-Various functions to retrieve, read, parse, clean, and load data integral to the
-Simethicone database
-"""
-
 from database.models import AnnualMiles
 from etl.shared import get_logger, load_table
 

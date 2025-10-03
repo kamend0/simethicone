@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from sqlalchemy import DateTime
 from sqlalchemy.ext.declarative import declared_attr
@@ -30,7 +30,7 @@ class FuelEfficiency(Base):
     __tablename__ = "fuel_efficiency"
 
     duoarea: Mapped[str] = mapped_column(nullable=False)
-    period: Mapped[datetime] = mapped_column(nullable=False)
+    period: Mapped[date] = mapped_column(nullable=False)
     product_name: Mapped[str] = mapped_column(nullable=False)
     value: Mapped[float] = mapped_column()
 
