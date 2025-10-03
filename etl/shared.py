@@ -4,11 +4,30 @@ Simethicone database
 """
 
 import logging
+from typing import Optional
 
+import requests
 from sqlalchemy import insert
 from sqlalchemy.sql.schema import Table
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from database.connector import get_engine
+
+
+@retry(
+    wait=wait_exponential(multiplier=1, min=2, max=15),
+    stop=stop_after_attempt(5),
+    retry=retry_if_exception_type(requests.exceptions.RequestException),
+)
+def get_with_exp_retry(url: str, params: Optional[dict] = None):
+    response = requests.get(url, params=params, timeout=10)  # add timeout
+    response.raise_for_status()  # raise for HTTP errors, which will be retried
+    return response
 
 
 def get_logger():

@@ -1,10 +1,11 @@
-start_db:
+build_db:
 	@docker-compose up -d --build
 
-init_db:
-	@uv run python3 -m database.scripts.init_db
-
+make start_db:
+	@docker-compose up -d
+	
 load_db:
+	@uv run python3 -m database.scripts.init_db
 	@uv run python3 -m etl.load
 
 stop_db:

@@ -31,8 +31,8 @@ class FuelEfficiency(Base):
 
     duoarea: Mapped[str] = mapped_column(nullable=False)
     period: Mapped[date] = mapped_column(nullable=False)
-    product_name: Mapped[str] = mapped_column(nullable=False)
-    value: Mapped[float] = mapped_column(nullable=True)
+    gasoline_type: Mapped[str] = mapped_column(nullable=False)
+    cost_per_gallon: Mapped[float] = mapped_column(nullable=True)
 
 
 class Vehicle(Base):
@@ -41,5 +41,5 @@ class Vehicle(Base):
     make: Mapped[str] = mapped_column(nullable=False)
     model: Mapped[str] = mapped_column(nullable=False)
     year: Mapped[int] = mapped_column(nullable=False)
-    comb08u: Mapped[float] = mapped_column(nullable=False)
-    fueltype1: Mapped[str] = mapped_column(nullable=False)
+    average_mpg: Mapped[float] = mapped_column(nullable=True)
+    fuel_type: Mapped[str] = mapped_column(nullable=False)

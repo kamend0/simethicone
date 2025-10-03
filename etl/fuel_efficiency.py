@@ -108,13 +108,13 @@ def run_fuel_efficiency_etl(logger=get_logger(), use_raw_in_db: bool = False):
         load_record = {
             "period": record.get("period"),
             "duoarea": record.get("duoarea", "").strip(),
-            "product_name": record.get("product-name"),
-            "value": record.get("value"),
+            "gasoline_type": record.get("product-name"),
+            "cost_per_gallon": record.get("value"),
         }
 
         load_record["period"] = datetime.strptime(load_record["period"], "%Y-%m-%d")
-        load_record["value"] = (
-            None if record["value"] is None else float(record["value"])
+        load_record["cost_per_gallon"] = (
+            None if record["cost_per_gallon"] is None else float(record["value"])
         )
 
         return load_record
