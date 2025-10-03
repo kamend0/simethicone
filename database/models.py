@@ -30,8 +30,9 @@ class FuelEfficiency(Base):
     __tablename__ = "fuel_efficiency"
 
     duoarea: Mapped[str] = mapped_column(nullable=False)
-    state: Mapped[str] = mapped_column(nullable=False)
-    miles: Mapped[int] = mapped_column(nullable=False)
+    period: Mapped[datetime] = mapped_column(nullable=False)
+    product_name: Mapped[str] = mapped_column(nullable=False)
+    value: Mapped[float] = mapped_column()
 
 
 class Vehicle(Base):
