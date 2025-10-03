@@ -63,7 +63,8 @@ def fetch_all_fuel_efficiency_data(logger=get_logger()):
     necessary requests thereafter.
     Returns a list of all dict objects representing each record in their database.
     """
-    print("Getting total number of records to fetch...")
+    logger.info("Retrieving total number of fuel efficiency records to fetch...")
+
     # Two birds with one stone: first batch gives data and total records
     first_batch_data = fetch_fuel_efficiency_response_json(offset=0)
     total_num_records = int(first_batch_data["response"]["total"])
@@ -71,7 +72,7 @@ def fetch_all_fuel_efficiency_data(logger=get_logger()):
 
     logger.info(f"Total available records: {total_num_records}")
     logger.info(
-        f"Total remaining API calls to make: {all_offsets} in batches of {RECORD_LIMIT}"
+        f"Total remaining API calls to make: {len(all_offsets)} in batches of {RECORD_LIMIT} records"
     )
 
     all_results = fetch_fuel_efficiency_data(response_json=first_batch_data)

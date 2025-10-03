@@ -43,6 +43,6 @@ def run_annual_miles_etl(logger=get_logger()):
         for line in lines[1:]
     ]
 
-    logger.info(f"Successfully cleaned all data from {SOURCE_FILENAME}. Loading...")
+    logger.info(f"Successfully cleaned all data from {SOURCE_FILENAME}")
 
     load_table(table=TABLE, records=rows, logger=logger)
