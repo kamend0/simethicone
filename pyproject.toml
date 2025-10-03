@@ -3,5 +3,15 @@ name = "simethicone"
 version = "0.1.0"
 description = "End-to-end ETL + API to find the most fuel-efficient vehicles in a given region."
 readme = "README.md"
-requires-python = "==3.11"
-dependencies = []
+requires-python = "==3.11.7"
+dependencies = [
+    "pandas>=2.3.3",
+    "psycopg2>=2.9.10",
+    "requests>=2.32.5",
+    "sqlalchemy>=2.0.43",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+]
