@@ -9,4 +9,13 @@ wheels/
 # Virtual environments
 .venv
 
+# All evnironment variables
+*.env
+
 .DS_Store
+
+# Development scripts, notebooks, etc.
+working_code/
+
+# Project source data: reflected in other paths within the repo as necessary
+take_home_source/
