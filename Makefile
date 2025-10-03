@@ -7,7 +7,7 @@ init_db:
 load_db:
 	@uv run python3 -m etl.load
 
-stop:
+stop_db:
 ifeq ($(DEL),true)
 	@echo "Stopping app and destroying database..."
 else
@@ -16,5 +16,5 @@ endif
 
 	@docker-compose down $(if $(DEL),-v,)
 
-kill:
-	@$(MAKE) stop DEL=true
+kill_db:
+	@$(MAKE) stop_db DEL=true
