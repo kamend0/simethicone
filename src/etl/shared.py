@@ -16,7 +16,7 @@ from tenacity import (
     wait_exponential,
 )
 
-from database.connector import get_engine
+from src.database.connector import get_engine
 
 
 @retry(

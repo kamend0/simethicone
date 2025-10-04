@@ -1,8 +1,13 @@
-# feel free to modify this file however you see fit
-FROM python:3.13-slim
+FROM python:3.11.7-slim
+
+# Install PostgreSQL development dependencies
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends build-essential curl libpq-dev \
+  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man
 
 WORKDIR /app
 COPY . /app
 
+RUN pip install .
+
 EXPOSE 8000
-ENTRYPOINT ["python", "api.py"]

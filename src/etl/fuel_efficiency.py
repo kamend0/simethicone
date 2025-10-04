@@ -11,9 +11,9 @@ from tenacity import (
     wait_exponential,
 )
 
-from database.connector import get_engine
-from database.models import FuelEfficiency
-from etl.shared import get_logger, load_table
+from src.database.connector import get_engine
+from src.database.models import FuelEfficiency
+from src.etl.shared import get_logger, load_table
 
 BASE_URL = "https://api.eia.gov/v2/petroleum/pri/gnd/data"
 RECORD_LIMIT = 5000
@@ -92,7 +92,7 @@ def fetch_all_fuel_efficiency_data(logger=get_logger()):
     return all_results
 
 
-def run_fuel_efficiency_etl(logger=get_logger(), use_raw_in_db: bool = False):
+def run_fuel_efficiency_etl(logger=get_logger(), use_local: bool = False):
     """
     Extracts fuel efficiency data from the EIA API. Assumes presence of API key in the
     environment. Saves both the raw data returned from the API to a raw table in the
@@ -114,16 +114,18 @@ def run_fuel_efficiency_etl(logger=get_logger(), use_raw_in_db: bool = False):
 
         load_record["period"] = datetime.strptime(load_record["period"], "%Y-%m-%d")
         load_record["cost_per_gallon"] = (
-            None if record["cost_per_gallon"] is None else float(record["value"])
+            None
+            if load_record["cost_per_gallon"] is None
+            else float(load_record["cost_per_gallon"])
         )
 
         return load_record
 
-    if use_raw_in_db:
-        engine = get_engine()
-        with engine.connect() as conn:
-            df = pd.read_sql_table(table_name=f"raw_{TABLE.name}", con=conn)
-            all_data = df.to_dict(orient="records")
+    if use_local:
+        df = pd.read_csv(
+            filepath_or_buffer="data/raw_eia_api_data.tsv", sep="\t", low_memory=False
+        )
+        all_data = df.to_dict(orient="records")
     else:
         all_data = fetch_all_fuel_efficiency_data()
 
@@ -146,5 +148,8 @@ def run_fuel_efficiency_etl(logger=get_logger(), use_raw_in_db: bool = False):
     load_data = [
         _parse_fuel_efficiency_record(record=data_record) for data_record in all_data
     ]
+
+    # Per project requirements, only keep records for regular gas
+    load_data = [d for d in load_data if d["gasoline_type"] == "Regular Gasoline"]
 
     load_table(table=TABLE, records=load_data)

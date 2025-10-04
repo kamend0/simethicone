@@ -22,5 +22,6 @@ services:
       - database
     ports:
       - "8000:8000"
+    command: "fastapi run src/api/api.py --host 0.0.0.0 --port 8000 --reload"
 volumes:
   data:

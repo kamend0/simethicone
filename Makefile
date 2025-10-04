@@ -1,14 +1,14 @@
-build_db:
+build:
 	@docker-compose up -d --build
 
-make start_db:
+start:
 	@docker-compose up -d
 	
 load_db:
-	@uv run python3 -m database.scripts.init_db
-	@uv run python3 -m etl.load
+	@uv run python3 -m src.database.scripts.init_db
+	@uv run python3 -m src.etl.load
 
-stop_db:
+stop:
 ifeq ($(DEL),true)
 	@echo "Stopping app and destroying database..."
 else
@@ -17,5 +17,5 @@ endif
 
 	@docker-compose down $(if $(DEL),-v,)
 
-kill_db:
-	@$(MAKE) stop_db DEL=true
+kill:
+	@$(MAKE) stop DEL=true

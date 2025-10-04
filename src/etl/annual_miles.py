@@ -1,5 +1,5 @@
-from database.models import AnnualMiles
-from etl.shared import get_logger, load_table
+from src.database.models import AnnualMiles
+from src.etl.shared import get_logger, load_table
 
 
 def run_annual_miles_etl(logger=get_logger()):

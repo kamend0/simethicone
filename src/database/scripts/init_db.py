@@ -1,5 +1,5 @@
-from database.connector import get_engine
-from database.models import Base
+from src.database.connector import get_engine
+from src.database.models import Base
 
 
 def init_db():

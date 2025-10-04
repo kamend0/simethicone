@@ -1,7 +1,7 @@
 import pandas as pd
 
-from database.models import Vehicle
-from etl.shared import get_logger, get_with_exp_retry, load_table
+from src.database.models import Vehicle
+from src.etl.shared import get_logger, get_with_exp_retry, load_table
 
 
 def run_vehicle_data_etl(logger=get_logger(), redownload: bool = False):
@@ -30,6 +30,9 @@ def run_vehicle_data_etl(logger=get_logger(), redownload: bool = False):
     ff["average_mpg"] = ff["average_mpg"].astype(float)
     # Some average_mpg values are 0. They aren't really, they're None.
     ff["average_mpg"] = ff["average_mpg"].replace(to_replace=0.0, value=None)
+
+    # Per project requirement, only get cars that take regular gas
+    ff = ff[ff["fuel_type"] == "Regular Gasoline"]
 
     logger.info("Transformations successful, pushing to database...")
     load_table(table=TABLE, records=ff.to_dict(orient="records"))
