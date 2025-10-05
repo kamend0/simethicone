@@ -9,7 +9,7 @@ from src.etl.derived_tables import create_derived_tables
 
 if __name__ == "__main__":
     run_annual_miles_etl()
-    run_fuel_efficiency_etl(use_local=True)
+    run_fuel_efficiency_etl()
     run_vehicle_data_etl()
 
     create_derived_tables()
