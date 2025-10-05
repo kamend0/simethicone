@@ -13,7 +13,7 @@ services:
   api:
     build: .
     environment:
-      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_HOST: database
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME}

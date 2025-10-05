@@ -1,4 +1,4 @@
-FROM python:3.11.7-slim
+FROM python:3.13.3-slim
 
 # Install PostgreSQL development dependencies
 RUN apt-get update \

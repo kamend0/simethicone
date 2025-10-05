@@ -3,7 +3,7 @@ name = "simethicone"
 version = "0.1.0"
 description = "End-to-end ETL + API to find the most fuel-efficient vehicles in a given region."
 readme = "README.md"
-requires-python = "==3.11.7"
+requires-python = "==3.13.3"
 dependencies = [
     "fastapi[standard]>=0.118.0",
     "pandas>=2.3.3",
