@@ -137,7 +137,7 @@ def run_fuel_efficiency_etl(logger=get_logger(), use_local: bool = False):
         df = pd.DataFrame(data=all_data)
 
         logger.info("Saving retrieved raw data to local file...")
-        df.to_sql(name=f"raw_{TABLE.name}", con=get_engine(), index=False)
+        df.to_csv(path_or_buf="data/raw_eia_api_data.tsv", sep="\t", index=False)
 
         logger.info(
             f"Pushing raw data for {len(all_data)} records to table raw_{TABLE.name}..."
