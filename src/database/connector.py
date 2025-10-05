@@ -1,7 +1,7 @@
 import os
 
-from sqlalchemy import Engine, create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 def get_connection_string():
@@ -23,15 +23,14 @@ def get_engine(connection_string: str = get_connection_string()):
     return create_engine(connection_string)
 
 
-def create_sessionmaker(
-    connection_string: str = get_connection_string(), engine: Engine = None
-):
-    if not engine:
-        engine = create_engine(connection_string)
-    return sessionmaker(bind=engine, autoflush=False, autocommit=False)
+# For FastAPI connection, need an async function
+
+Session = sessionmaker(bind=get_engine(), autoflush=False, autocommit=False)
 
 
-def get_db(
-    session_maker: Session = create_sessionmaker(),
-):
-    return session_maker()
+async def get_db():
+    session = Session()
+    try:
+        yield session
+    finally:
+        session.close()
