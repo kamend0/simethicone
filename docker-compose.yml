@@ -10,6 +10,12 @@ services:
       - "5432:5432"
     volumes:
       - data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USERNAME} -d $${POSTGRES_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
   api:
     build: .
     environment:
@@ -20,8 +26,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     links:
       - database
+    depends_on:
+      database:
+        condition:
+          service_healthy
     ports:
       - "8000:8000"
-    command: "fastapi run src/api/api.py --host 0.0.0.0 --port 8000 --reload"
+    command: "sh api_startup.sh"
 volumes:
   data:
