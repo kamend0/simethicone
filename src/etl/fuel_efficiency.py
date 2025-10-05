@@ -13,7 +13,7 @@ from tenacity import (
 
 from src.database.connector import get_engine
 from src.database.models import FuelEfficiency
-from src.etl.shared import get_logger, load_table
+from src.etl.utils import get_logger, load_table
 
 BASE_URL = "https://api.eia.gov/v2/petroleum/pri/gnd/data"
 RECORD_LIMIT = 5000

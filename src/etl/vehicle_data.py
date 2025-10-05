@@ -1,7 +1,7 @@
 import pandas as pd
 
 from src.database.models import Vehicle
-from src.etl.shared import get_logger, get_with_exp_retry, load_table
+from src.etl.utils import get_logger, get_with_exp_retry, load_table
 
 
 def run_vehicle_data_etl(logger=get_logger(), redownload: bool = False):

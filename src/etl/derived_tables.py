@@ -1,7 +1,7 @@
 from sqlalchemy import text
 
 from src.database.connector import get_engine
-from src.etl.shared import get_logger
+from src.etl.utils import get_logger
 
 logger = get_logger()
 
