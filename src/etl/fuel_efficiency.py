@@ -25,7 +25,14 @@ RECORD_LIMIT = 5000
     retry=retry_if_exception_type(requests.exceptions.RequestException),
 )
 def get_with_exp_retry(url: str, params: dict):
-    response = requests.get(url, params=params, timeout=10)  # add timeout
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+    }
+    response = requests.get(url, params=params, headers=headers, timeout=10)
     response.raise_for_status()  # raise for HTTP errors, which will be retried
     return response
 

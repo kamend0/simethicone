@@ -1,7 +1,5 @@
 build:
 	@docker-compose up -d --build
-	@uv run python3 -m src.database.scripts.init_db
-	@uv run python3 -m src.etl.run
 
 start:
 	@docker-compose up -d

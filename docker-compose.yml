@@ -24,6 +24,7 @@ services:
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      EIA_API_KEY: ${EIA_API_KEY}
     links:
       - database
     depends_on:
