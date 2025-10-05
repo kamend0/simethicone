@@ -86,7 +86,8 @@ def fetch_all_fuel_efficiency_data(logger=get_logger()):
         for future in as_completed(futures):
             all_results.extend(future.result())
             logger.info(
-                f"{len(future.result())} records fetched; total of {len(all_results)} records fetched so far"
+                f"{len(all_results)} records fetched so far. "
+                f"{(len(all_results) / total_num_records):.1%} complete."
             )
     logger.info(f"All API calls completed. Total records retrieved: {len(all_results)}")
     return all_results
