@@ -83,9 +83,7 @@ def fetch_all_fuel_efficiency_data(logger=get_logger()):
     )
 
     all_results = fetch_fuel_efficiency_data(response_json=first_batch_data)
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        # Workers limited to 4 in an effort to reduce our impact on the API, and the
-        # risk that we get our API key blocked/banned
+    with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
         futures = [
             executor.submit(fetch_fuel_efficiency_data, offset)
             for offset in all_offsets

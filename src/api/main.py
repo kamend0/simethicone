@@ -15,8 +15,7 @@ async def healthy():
     return JSONResponse(content={"status": "ok"}, status_code=200)
 
 
-# TODO: create your API
-@app.get("/economical/")
+@app.get("/economical")
 async def get_economical(
     duoarea: str,
     month: int,
